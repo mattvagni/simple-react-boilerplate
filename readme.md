@@ -4,5 +4,6 @@ npm install
 ```
 
 #### Commands
-- Build & watch js: `grunt js`
-- Build & watch css: `grunt css`
+- Build & watch JS: `grunt js`
+- Build & watch CSS: `grunt css`
+- Run JS tests: `grunt test`

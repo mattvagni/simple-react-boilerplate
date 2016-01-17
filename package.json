@@ -1,12 +1,13 @@
 {
   "name": "simple-react-boilerplate",
   "version": "1.0.0",
-  "description": "",
-  "main": "gruntfile.js",
+  "description": "All the boring boilerplate for a simple client-side react app.",
+  "main": "src/app.js",
+  "repository": "https://github.com/mattvagni/simple-react-boilerplate",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
-  "author": "",
+  "author": "mattvagni",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.4.0",
@@ -18,13 +19,25 @@
     "grunt-contrib-clean": "^0.7.0",
     "grunt-contrib-sass": "^0.9.2",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-karma": "^0.12.1",
     "grunt-webpack": "^1.0.11",
+    "karma": "^0.13.19",
+    "karma-expect": "^1.1.1",
+    "karma-jsdom-launcher": "^2.0.0",
+    "karma-mocha": "^0.2.1",
+    "karma-sinon": "^1.0.4",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-spec-reporter": "0.0.23",
+    "karma-webpack": "^1.7.0",
     "load-grunt-tasks": "^3.4.0",
-    "react-dom": "^0.14.6",
+    "mocha": "^2.3.4",
+    "react-addons-test-utils": "^0.14.6",
+    "sinon": "^1.17.2",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "react": "^0.14.6"
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6"
   }
 }

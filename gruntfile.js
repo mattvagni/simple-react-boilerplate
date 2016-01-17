@@ -2,9 +2,23 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
+    /*
+    Shared webpack config between karma and regular webpack task.
+     */
+    const webpackLoaders = [
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: "babel-loader",
+            query: {
+                presets: ['es2015', 'react']
+            }
+        }
+    ];
+
     grunt.initConfig({
         webpack: {
-            dist: {
+            js: {
                 entry: "./src/js/app.js",
                 output: {
                     path: "dist/js/",
@@ -13,14 +27,7 @@ module.exports = function(grunt) {
                 watch: true,
                 keepalive: true,
                 module: {
-                    loaders: [{
-                        test: /\.js$/,
-                        exclude: /node_modules/,
-                        loader: "babel-loader",
-                        query: {
-                            presets: ['es2015', 'react']
-                        }
-                    }]
+                    loaders: webpackLoaders
                 },
                 devtool: 'source-map',
                 progress: true,
@@ -62,11 +69,43 @@ module.exports = function(grunt) {
             }
         },
 
+        karma: {
+            options: {
+                captureConsole: true,
+                singleRun: true,
+                browsers: ['jsdom'],
+                frameworks: [
+                    'mocha',
+                    'expect',
+                    'sinon'
+                ],
+                preprocessors: {
+                    './src/js/**/*.test.js': ['webpack', 'sourcemap'],
+                },
+                webpack: {
+                    module: {
+                        loaders: webpackLoaders
+                    },
+                    devtool: 'inline-source-map',
+                },
+                webpackServer: {
+                    noInfo: true
+                },
+                reporters: ['spec'],
+            },
+            js: {
+                files: [{
+                    src: './src/js/**/*.test.js'
+                }]
+            }
+        }
+
     });
 
     grunt.registerTask('build-css', ['clean:css', 'sass', 'autoprefixer']);
 
     grunt.registerTask('js', ['clean:js', 'webpack']);
     grunt.registerTask('css', ['build-css', 'watch:css']);
+    grunt.registerTask('test', ['karma:js']);
 
 }
