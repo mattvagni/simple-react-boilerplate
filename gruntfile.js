@@ -1,12 +1,14 @@
+var webpack = require("webpack");
+
 module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
     /*
     Shared webpack config between karma and regular webpack task.
-     */
-    const webpackLoaders = [
-        {
+    */
+    const webpackLoaders = {
+        babel: {
             test: /\.js$/,
             exclude: /node_modules/,
             loader: "babel-loader",
@@ -14,23 +16,46 @@ module.exports = function(grunt) {
                 presets: ['es2015', 'react']
             }
         }
-    ];
+    };
+
 
     grunt.initConfig({
         webpack: {
-            js: {
+            options: {
                 entry: "./src/js/app.js",
                 output: {
                     path: "dist/js/",
                     filename: "app.js",
                 },
+                progress: true,
+            },
+            dev: {
                 watch: true,
                 keepalive: true,
                 module: {
-                    loaders: webpackLoaders
+                    loaders: [webpackLoaders.babel]
                 },
                 devtool: 'source-map',
-                progress: true,
+            },
+            prod: {
+                module: {
+                    loaders: [webpackLoaders.babel]
+                },
+                plugins: [
+                    new webpack.DefinePlugin({
+                        'process.env': {
+                            'NODE_ENV': JSON.stringify('production')
+                        }
+                    }),
+                    new webpack.optimize.UglifyJsPlugin({
+                        compress: {
+                            warnings: false
+                        },
+                        output: {
+                            comments: false
+                        }
+                    })
+                ]
             }
         },
 
@@ -84,7 +109,7 @@ module.exports = function(grunt) {
                 },
                 webpack: {
                     module: {
-                        loaders: webpackLoaders
+                        loaders: [webpackLoaders.babel]
                     },
                     devtool: 'inline-source-map',
                 },
@@ -102,10 +127,20 @@ module.exports = function(grunt) {
 
     });
 
+    // Builds css (used for prod and dev builds as it's the same)
     grunt.registerTask('build-css', ['clean:css', 'sass', 'autoprefixer']);
 
-    grunt.registerTask('js', ['clean:js', 'webpack']);
-    grunt.registerTask('css', ['build-css', 'watch:css']);
+    // Builds js for prod (minifies & no sourcemaps)
+    grunt.registerTask('build-js', ['clean:js', 'webpack:prod'])
+
+    // Builds everything.
+    grunt.registerTask('build', ['build-js', 'build-css']);
+
+    // Starts a watch processes
+    grunt.registerTask('watch-js', ['clean:js', 'webpack:dev']);
+    grunt.registerTask('watch-css', ['build-css', 'watch:css']);
+
+    // Runs tests
     grunt.registerTask('test', ['karma:js']);
 
 }

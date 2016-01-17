@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {Greeting} from "./components/greeting";
+import Greeting from "./components/greeting";
 
 ReactDOM.render(
     <Greeting name="world"/>,
