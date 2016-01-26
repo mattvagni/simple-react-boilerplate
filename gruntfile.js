@@ -123,6 +123,13 @@ module.exports = function(grunt) {
                     src: './src/js/**/*.test.js'
                 }]
             }
+        },
+
+        'http-server': {
+            dev: {
+                root: './',
+                port: 3000
+            }
         }
 
     });
@@ -139,6 +146,9 @@ module.exports = function(grunt) {
     // Starts a watch processes
     grunt.registerTask('watch-js', ['clean:js', 'webpack:dev']);
     grunt.registerTask('watch-css', ['build-css', 'watch:css']);
+
+    // Serve's the root's html file on localhost:3000
+    grunt.registerTask('serve', ['http-server:dev']);
 
     // Runs tests
     grunt.registerTask('test', ['karma:js']);
