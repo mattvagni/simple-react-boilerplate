@@ -1,4 +1,7 @@
 var webpack = require("webpack");
+var express = require('express');
+var path = require('path');
+var morgan = require('morgan');
 
 module.exports = function(grunt) {
 
@@ -17,6 +20,41 @@ module.exports = function(grunt) {
             }
         }
     };
+
+    /**
+     * Since this uses client side routing we need to always serve the same
+     * static html file on _any_ path.
+     */
+    grunt.registerTask('express-server', 'Serve index.html on all paths.', function() {
+        var done = this.async();
+        var app = express();
+
+        app.use(morgan('tiny'));
+
+        app.use(function (req, res, next) {
+
+            // Skip static file requests
+            if (path.extname(req.path).length > 0) {
+                return next();
+            }
+
+            var options = {
+                root: __dirname,
+            };
+
+            res.sendFile('index.html', options, (err) => {
+                if (err){
+                    done(err);
+                }
+            });
+         });
+
+        app.use(express.static(__dirname));
+
+        app.listen(3000, function () {
+            console.log('Listening on port 3000');
+        });
+    });
 
 
     grunt.initConfig({
@@ -123,13 +161,6 @@ module.exports = function(grunt) {
                     src: './src/js/**/*.test.js'
                 }]
             }
-        },
-
-        'http-server': {
-            dev: {
-                root: './',
-                port: 3000
-            }
         }
 
     });
@@ -147,8 +178,8 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-js', ['clean:js', 'webpack:dev']);
     grunt.registerTask('watch-css', ['build-css', 'watch:css']);
 
-    // Serve's the root's html file on localhost:3000
-    grunt.registerTask('serve', ['http-server:dev']);
+    // Serve the root 'index.html' on any localhost url
+    grunt.registerTask('serve', ['express-server']);
 
     // Runs tests
     grunt.registerTask('test', ['karma:js']);

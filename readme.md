@@ -16,4 +16,4 @@ npm install
 - To watch for CSS changes and re-build on change: `grunt css`
 - To run javascript tests: `grunt test`
 - To build css & javascript for 'production' (minified): `grunt build`. You can also build javascript or css separately by running `grunt build-js` and `grunt-build-css` respectively.
-- To serve the localhost html file just do `grunt serve`
+- To serve the localhost html file just do `grunt serve`. *Note:* this will serve the index.html file in the root on all paths of localhost. This makes it super easy if you want to start using something like react-router etc.
