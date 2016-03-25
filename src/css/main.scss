@@ -1,6 +1,49 @@
+html, body {
+    height: 100%;
+}
+
 body {
     background: #f2f2f2;
-    margin: 20px;
     font-family: sans-serif;
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter {
+    width: 200px;
+}
+
+.counter-number {
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    background: #FFF;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    line-height: 100px;
+}
+
+.counter-button {
+    display: block;
+    text-align: center;
+    padding: 15px;
+    border: none;
+    background: rgba(0,0,0,0.1);
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease;
+    width: 100%;
+    outline: none;
+}
+
+.counter-button:active {
+    position: relative;
+    top: 1px;
+}
+
+.counter-button:hover {
+    background: rgba(0,0,0,1);
+    color: #FFF;
 }
