@@ -70,6 +70,7 @@ module.exports = function(grunt) {
             dev: {
                 watch: true,
                 keepalive: true,
+                failOnError: false,
                 module: {
                     loaders: [webpackLoaders.babel]
                 },
